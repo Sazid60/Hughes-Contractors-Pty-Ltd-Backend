@@ -1,18 +1,19 @@
 import express, { NextFunction, Request, Response } from "express";
-import { Equipment } from "../models/equipment.model";
+import { Labour } from "../models/labourRate.model";
 
-export const equipmentRoutes = express.Router();
 
-// Create equipment
-equipmentRoutes.post("/", async (req: Request, res: Response) => {
+export const labourRoutes = express.Router();
+
+// Create a labour entry
+labourRoutes.post("/", async (req: Request, res: Response) => {
     try {
         const body = req.body;
-        const equipment = await Equipment.create(body);
+        const labour = await Labour.create(body);
 
         res.status(201).json({
             success: true,
-            message: "Equipment created successfully",
-            data: equipment,
+            message: "Labour entry created successfully",
+            data: labour,
         });
     } catch (error: any) {
         res.status(400).json({
@@ -26,15 +27,15 @@ equipmentRoutes.post("/", async (req: Request, res: Response) => {
     }
 });
 
-// Get all equipment
-equipmentRoutes.get("/", async (_req: Request, res: Response) => {
+// Get all labour entries
+labourRoutes.get("/", async (_req: Request, res: Response) => {
     try {
-        const equipments = await Equipment.find();
+        const labours = await Labour.find();
 
         res.status(200).json({
             success: true,
-            message: "Equipment data retrieved successfully",
-            data: equipments,
+            message: "Labour data retrieved successfully",
+            data: labours,
         });
     } catch (error: any) {
         res.status(400).json({
@@ -45,37 +46,37 @@ equipmentRoutes.get("/", async (_req: Request, res: Response) => {
     }
 });
 
-// Get single equipment
-equipmentRoutes.get("/:equipmentId", async (req: Request, res: Response, next: NextFunction) => {
+// Get single labour entry
+labourRoutes.get("/:labourId", async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const equipmentId = req.params.equipmentId;
-        const equipment = await Equipment.findById(equipmentId);
+        const labourId = req.params.labourId;
+        const labour = await Labour.findById(labourId);
 
         res.status(200).json({
             success: true,
-            message: "Equipment data retrieved successfully",
-            data: equipment,
+            message: "Labour data retrieved successfully",
+            data: labour,
         });
     } catch (error: any) {
         next(error);
     }
 });
 
-// Update equipment
-equipmentRoutes.put("/:equipmentId", async (req: Request, res: Response) => {
+// Update a labour entry
+labourRoutes.put("/:labourId", async (req: Request, res: Response) => {
     try {
-        const equipmentId = req.params.equipmentId;
+        const labourId = req.params.labourId;
         const updatedData = req.body;
 
-        const updatedEquipment = await Equipment.findByIdAndUpdate(equipmentId, updatedData, {
+        const updatedLabour = await Labour.findByIdAndUpdate(labourId, updatedData, {
             new: true,
             runValidators: true,
         });
 
         res.status(200).json({
             success: true,
-            message: "Equipment updated successfully",
-            data: updatedEquipment,
+            message: "Labour entry updated successfully",
+            data: updatedLabour,
         });
     } catch (error: any) {
         res.status(400).json({
@@ -89,15 +90,15 @@ equipmentRoutes.put("/:equipmentId", async (req: Request, res: Response) => {
     }
 });
 
-// Delete equipment
-equipmentRoutes.delete("/:equipmentId", async (req: Request, res: Response, next: NextFunction) => {
+// Delete a labour entry
+labourRoutes.delete("/:labourId", async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const equipmentId = req.params.equipmentId;
-        await Equipment.findByIdAndDelete(equipmentId);
+        const labourId = req.params.labourId;
+        await Labour.findByIdAndDelete(labourId);
 
         res.status(200).json({
             success: true,
-            message: "Equipment deleted successfully",
+            message: "Labour entry deleted successfully",
             data: null,
         });
     } catch (error: any) {

@@ -1,20 +1,20 @@
 import express, { NextFunction, Request, Response } from "express";
-import { Book } from "../models/book.model";
-import { createBookZodSchema, updateBookZodSchema } from "../validators/book.zod.validator";
+import { Project } from "../models/project.model";
 
-export const bookRoutes = express.Router();
+
+export const projectRoutes = express.Router();
 
 
 // create a book 
-bookRoutes.post("/", async (req: Request, res: Response) => {
+projectRoutes.post("/", async (req: Request, res: Response) => {
   try {
-    const body = await createBookZodSchema.parseAsync(req.body)
-    const book = await Book.create(body);
+    const body = await req.body
+    const project = await Project.create(body);
 
     res.status(201).json({
       success: true,
-      message: "Book created successfully",
-      data: book,
+      message: "Project created successfully",
+      data: project,
     });
   } catch (error: any) {
     res.status(400).json({
@@ -25,17 +25,15 @@ bookRoutes.post("/", async (req: Request, res: Response) => {
   }
 });
 
-// get all books 
-bookRoutes.get("/", async (req: Request, res: Response) => {
+// get all books
+projectRoutes.get("/", async (req: Request, res: Response) => {
   try {
-    
 
-    const books = await Book.find();
-
+    const books = await Project.find();
 
     res.status(200).json({
       success: true,
-      message: "Books retrieved successfully",
+      message: "Projects retrieved successfully",
       data: books,
     });
   } catch (error: any) {
@@ -47,61 +45,38 @@ bookRoutes.get("/", async (req: Request, res: Response) => {
   }
 });
 
-// get single book 
+// // get single book
 
-bookRoutes.get("/:bookId", async (req: Request, res: Response, next: NextFunction) => {
+projectRoutes.get("/:projectId", async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const bookId = req.params.bookId
-    const existingBook = await Book.isBookExists(bookId)
+    const bookId = req.params.projectId
 
-    if (existingBook) {
-      const book = await Book.findById(bookId)
-      res.status(200).json(
-        {
-          success: true,
-          message: "Book retrieved successfully",
-          data: book,
-        })
-    } else {
-      res.status(404).json(
-        {
-          message: "Book Does Not Exists",
-          success: false,
-          data: {},
-        })
-    }
+    const book = await Project.findById(bookId)
+    res.status(200).json(
+      {
+        success: true,
+        message: "Project retrieved successfully",
+        data: book,
+      })
   } catch (error: any) {
-    // console.log(error)
     next(error)
   }
 })
 
-// update a book
+// // update a book
 
-bookRoutes.put("/:bookId", async (req: Request, res: Response, next: NextFunction) => {
+projectRoutes.put("/:bookId", async (req: Request, res: Response, next: NextFunction) => {
   try {
     const bookId = req.params.bookId
-    const updatedBookParameters = await updateBookZodSchema.parseAsync(req.body);
+    const updatedBookParameters = await req.body;
+    const updatedBook = await Project.findByIdAndUpdate(bookId, updatedBookParameters, { new: true, runValidators: true })
 
-    const existingBook = await Book.isBookExists(bookId)
-
-    if (existingBook) {
-      const updatedBook = await Book.findByIdAndUpdate(bookId, updatedBookParameters, { new: true, runValidators: true })
-
-      res.status(200).json(
-        {
-          success: true,
-          message: "Book Updated successfully",
-          data: updatedBook,
-        })
-    } else {
-      res.status(404).json(
-        {
-          message: "Book Does Not Exists",
-          success: false,
-          data: {},
-        })
-    }
+    res.status(200).json(
+      {
+        success: true,
+        message: "Project Updated successfully",
+        data: updatedBook,
+      })
 
   } catch (error: any) {
     res.status(400).json({
@@ -112,31 +87,19 @@ bookRoutes.put("/:bookId", async (req: Request, res: Response, next: NextFunctio
   }
 })
 
-// delete a book 
+// // delete a book
 
-bookRoutes.delete("/:bookId", async (req: Request, res: Response, next: NextFunction) => {
+projectRoutes.delete("/:bookId", async (req: Request, res: Response, next: NextFunction) => {
   try {
     const bookId = req.params.bookId
+    await Project.findByIdAndDelete(bookId)
 
-    const existingBook = await Book.isBookExists(bookId)
-
-    if (existingBook) {
-      await Book.findByIdAndDelete(bookId)
-
-      res.status(200).json(
-        {
-          success: true,
-          message: "Book deleted successfully",
-          data: null,
-        })
-    } else {
-      res.status(404).json(
-        {
-          message: "Book Does Not Exists",
-          success: false,
-          data: {},
-        })
-    }
+    res.status(200).json(
+      {
+        success: true,
+        message: "Project deleted successfully",
+        data: null,
+      })
   } catch (error: any) {
     next(error)
   }
