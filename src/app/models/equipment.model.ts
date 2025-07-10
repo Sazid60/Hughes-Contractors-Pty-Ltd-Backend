@@ -8,6 +8,10 @@ const equipmentSchema = new Schema<IEquipment>(
       required: [true, "Equipment name is required"],
       trim: true,
     },
+    equipmentImage: {
+      type: String,
+      required: [true, "Equipment Image is required"],
+    },
     hourlyRate: {
       type: Number,
       required: [true, "Hourly rate is required"],
