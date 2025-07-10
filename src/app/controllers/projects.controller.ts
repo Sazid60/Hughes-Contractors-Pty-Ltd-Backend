@@ -49,9 +49,9 @@ projectRoutes.get("/", async (req: Request, res: Response) => {
 
 projectRoutes.get("/:projectId", async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const bookId = req.params.projectId
+    const projectId = req.params.projectId
 
-    const book = await Project.findById(bookId)
+    const book = await Project.findById(projectId)
     res.status(200).json(
       {
         success: true,
@@ -65,17 +65,17 @@ projectRoutes.get("/:projectId", async (req: Request, res: Response, next: NextF
 
 // // update a book
 
-projectRoutes.put("/:bookId", async (req: Request, res: Response, next: NextFunction) => {
+projectRoutes.put("/:projectId", async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const bookId = req.params.bookId
-    const updatedBookParameters = await req.body;
-    const updatedBook = await Project.findByIdAndUpdate(bookId, updatedBookParameters, { new: true, runValidators: true })
+    const projectId = req.params.projectId
+    const updatedProjectParameters = await req.body;
+    const updatedProject = await Project.findByIdAndUpdate(projectId, updatedProjectParameters, { new: true, runValidators: true })
 
     res.status(200).json(
       {
         success: true,
         message: "Project Updated successfully",
-        data: updatedBook,
+        data: updatedProject,
       })
 
   } catch (error: any) {
@@ -89,10 +89,10 @@ projectRoutes.put("/:bookId", async (req: Request, res: Response, next: NextFunc
 
 // // delete a book
 
-projectRoutes.delete("/:bookId", async (req: Request, res: Response, next: NextFunction) => {
+projectRoutes.delete("/:projectId", async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const bookId = req.params.bookId
-    await Project.findByIdAndDelete(bookId)
+    const projectId = req.params.projectId
+    await Project.findByIdAndDelete(projectId)
 
     res.status(200).json(
       {
