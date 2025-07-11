@@ -7,7 +7,10 @@ export const equipmentRoutes = express.Router();
 equipmentRoutes.post("/", async (req: Request, res: Response) => {
     try {
         const body = req.body;
+
         const equipment = await Equipment.create(body);
+
+
 
         res.status(201).json({
             success: true,
@@ -27,7 +30,7 @@ equipmentRoutes.post("/", async (req: Request, res: Response) => {
 });
 
 // Get all equipment
-equipmentRoutes.get("/", async (_req: Request, res: Response) => {
+equipmentRoutes.get("/", async (req: Request, res: Response) => {
     try {
         const equipments = await Equipment.find();
 
