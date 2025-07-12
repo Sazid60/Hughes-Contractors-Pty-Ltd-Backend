@@ -1,23 +1,68 @@
-import { Server } from "http";
-import mongoose from "mongoose";
-import app from "./app";
-import config from "./app/config";
+/* eslint-disable no-console */
 
-let server: Server;
+import { Server } from "http"
+import mongoose from "mongoose"
+import app from "./app"
+import { envVars } from "./app/config/env"
+import { seedAdmin } from "./app/utils/seedAdmin"
 
-const PORT = config.port;
 
-async function main() {
-  try {
-    await mongoose.connect(config.mongo_uri as string);
-    console.log("Connected To Mongodb Using Mongoose!");
+let server: Server
 
-    server = app.listen(PORT, () => {
-      console.log(`APP IS LISTENING ON PORT ${PORT}`);
-    });
-  } catch (error) {
-    console.log(error);
-  }
+const startServer = async () => {
+    await mongoose.connect(envVars.DB_URL)
+    console.log("Connected To Database")
+    server = app.listen(envVars.PORT, () => {
+        console.log(`Server Is Running On Port ${envVars.PORT}`)
+    })
 }
 
-main();
+(async () => {
+    await startServer()
+    await seedAdmin()
+})()
+
+process.on("SIGTERM", (err) => {
+    console.log("Signal Termination Happened...! Server Is Shutting Down !", err)
+    if (server) {
+        server.close(() => {
+            process.exit(1)
+        })
+    }
+    process.exit(1)
+})
+
+process.on("SIGINT", () => {
+    console.log("I am manually Closing the server! Server Is Shutting Down !")
+    if (server) {
+        server.close(() => {
+            process.exit(1)
+        })
+    }
+
+    process.exit(1)
+})
+
+process.on("unhandledRejection", () => {
+    console.log("Unhandled Rejection Happened...! Server Is Shutting Down !")
+    if (server) {
+        server.close(() => {
+            process.exit(1)
+        })
+    }
+
+    process.exit(1)
+
+})
+
+process.on("uncaughtException", (err) => {
+    console.log("Uncaught Exception Happened...! Server Is Shutting Down !", err)
+    if (server) {
+        server.close(() => {
+            process.exit(1)
+        })
+    }
+
+    process.exit(1)
+
+})

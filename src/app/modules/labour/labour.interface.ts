@@ -4,3 +4,4 @@ export interface ILabour {
     perHourRate: number,
     minHour: number
 }
+
