@@ -28,6 +28,11 @@ const equipmentSchema = new Schema<IEquipment>(
             required: true,
             min: 0, // Must be a positive number
         },
+        description: {
+            type: String,
+            required: true,
+            trim: true,
+        },
     },
     {
         versionKey: false,

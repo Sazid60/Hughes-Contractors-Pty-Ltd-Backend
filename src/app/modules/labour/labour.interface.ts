@@ -2,6 +2,7 @@
 export interface ILabour {
     jobType: string,
     perHourRate: number,
-    minHour: number
+    minHour: number,
+    afterHourRate : number
 }
 

@@ -4,6 +4,7 @@ export interface IEquipment {
     equipmentImage: string,
     hourlyRate: number,
     minHour: number,
-    floatCharge: number
+    floatCharge: number,
+    description : string
 }
 
