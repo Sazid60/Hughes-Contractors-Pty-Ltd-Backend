@@ -20,6 +20,11 @@ const labourSchema = new Schema<ILabour>(
             required: true,
             min: 1,
         },
+        afterHourRate: {
+            type: Number,
+            required: true,
+            min: 0,
+        },
     },
     {
         versionKey: false,

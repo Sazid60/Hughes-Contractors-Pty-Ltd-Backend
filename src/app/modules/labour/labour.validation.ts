@@ -15,6 +15,12 @@ export const createLabourZodSchema = z.object({
         error: (issue) =>
             issue.input === undefined ? "Minimum hour is required" : "Invalid minimum hour",
     }).min(1, { message: "Minimum hour must be at least 1" }),
+
+    afterHourRate: z.number({
+        error: (issue) =>
+            issue.input === undefined ? "After hour rate is required" : "Invalid after hour rate",
+    }).min(0, { message: "After hour rate must be a positive number" }),
+
 });
 
 // For update, all fields optional
@@ -28,4 +34,9 @@ export const updateLabourZodSchema = z.object({
     minHour: z.number({ error: () => "Invalid minimum hour" })
         .min(1, { message: "Minimum hour must be at least 1" })
         .optional(),
+
+    afterHourRate: z.number({ error: () => "Invalid after hour rate" })
+        .min(0, { message: "After hour rate must be a positive number" })
+        .optional(),
+
 });

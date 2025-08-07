@@ -26,6 +26,10 @@ export const createEquipmentZodSchema = z.object({
         error: (issue) =>
             issue.input === undefined ? "Float charge is required" : "Invalid float charge",
     }).min(0, { message: "Float charge must be a positive number" }),
+    description: z.string({
+        error: (issue) =>
+            issue.input === undefined ? "Description is required" : "Invalid description",
+    }),
 });
 
 // UPDATE: All optional but still validated if present
@@ -59,5 +63,10 @@ export const updateEquipmentZodSchema = z.object({
             issue.input === undefined ? "Float charge is required" : "Invalid float charge",
     })
         .min(0, { message: "Float charge must be a positive number" })
+        .optional(),
+    description: z
+        .string({
+            error: () => "Invalid description",
+        })
         .optional(),
 });
