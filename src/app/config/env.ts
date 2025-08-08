@@ -12,27 +12,34 @@ interface EnvConfig {
     JWT_ACCESS_EXPIRES: string;
     ADMIN_EMAIL: string;
     ADMIN_PASSWORD: string;
+    CLOUDINARY: {
+        CLOUDINARY_CLOUD_NAME: string;
+        CLOUDINARY_API_KEY: string;
+        CLOUDINARY_API_SECRET: string;
+    };
 }
 
 const loadEnvVariables = (): EnvConfig => {
-    const requiredEnvVariables: (keyof EnvConfig)[] = [
-        "NODE_ENV",
+    const requiredEnvVariables: string[] = [
         "PORT",
         "DB_URL",
-        "EMAIL_USER",
-        "EMAIL_PASS",
+        "NODE_ENV",
         "BCRYPT_SALT_ROUND",
-        "JWT_ACCESS_SECRET",
         "JWT_ACCESS_EXPIRES",
+        "JWT_ACCESS_SECRET",
         "ADMIN_EMAIL",
         "ADMIN_PASSWORD",
+        "CLOUDINARY_CLOUD_NAME",
+        "CLOUDINARY_API_KEY",
+        "CLOUDINARY_API_SECRET",
     ];
+    ;
 
-    requiredEnvVariables.forEach((key) => {
+    requiredEnvVariables.forEach(key => {
         if (!process.env[key]) {
-            throw new Error(`Missing required environment variable: ${key}`);
+            throw new Error(`Missing require environment variable ${key}`)
         }
-    });
+    })
 
     return {
         NODE_ENV: process.env.NODE_ENV as "development" | "production",
@@ -45,6 +52,11 @@ const loadEnvVariables = (): EnvConfig => {
         JWT_ACCESS_EXPIRES: process.env.JWT_ACCESS_EXPIRES as string,
         ADMIN_EMAIL: process.env.ADMIN_EMAIL as string,
         ADMIN_PASSWORD: process.env.ADMIN_PASSWORD as string,
+        CLOUDINARY: {
+            CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME as string,
+            CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY as string,
+            CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET as string,
+        },
     };
 };
 
