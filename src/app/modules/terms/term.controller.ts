@@ -10,6 +10,7 @@ import { v2 as cloudinary } from "cloudinary";
 
 const createTerm = catchAsync(async (req: Request, res: Response) => {
   const file = req.file as Express.Multer.File;
+  console.log(file)
   if (!file) {
     throw new Error("No file provided");
   }
@@ -17,13 +18,20 @@ const createTerm = catchAsync(async (req: Request, res: Response) => {
   // Upload to Cloudinary (auto resource type for PDFs)
   const uploadResult = await cloudinary.uploader.upload(file.path, {
     resource_type: "auto", 
-    folder: "terms",
+    folder: "pdf"
   });
+  
+
+  
 
   const pdfUrl = uploadResult.secure_url;
 
+
+
   // Save the Cloudinary URL to DB
   const result = await termService.createOrReplaceTerm(pdfUrl);
+
+  console.log(result)
 
   sendResponse(res, {
     success: true,

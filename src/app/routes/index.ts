@@ -7,6 +7,7 @@ import { labourRoutes } from "../modules/labour/labour.route";
 import { equipmentRoutes } from "../modules/equipment/equipment.route";
 import { termRoutes } from "../modules/terms/term.route";
 import { certificationRoutes } from "../modules/certifications/certification.route";
+import { reviewRoutes } from "../modules/review/review.routes";
 
 
 export const router = Router();
@@ -43,6 +44,10 @@ const moduleRoutes = [
   {
     path: "/certifications", 
     route: certificationRoutes,
+  },
+  {
+    path: "/reviews", 
+    route: reviewRoutes,
   },
 ];
 
